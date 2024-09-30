@@ -20,25 +20,30 @@ spring:
             preLogger: true
             postLogger: true
       routes:
-          - id: first-service
-            uri: lb://MY-FIRST-SERVICE
-            predicates:
-              - Path=/first-service/**
-            filters:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+
+        - id: first-service
+          uri: lb://MY-FIRST-SERVICE
+          predicates:
+            - Path=/first-service/**
+          filters:
 #              - AddRequestHeader=first-service-request, first-service-request-header2
 #              - AddResponseHeader=first-service-response, first-service-response-header2
-              - CustomFilter
+            - CustomFilter
 
-          - id: second-service
-            uri: lb://MY-SECOND-SERVICE
-            predicates:
-              - Path=/second-service/**
-            filters:
+        - id: second-service
+          uri: lb://MY-SECOND-SERVICE
+          predicates:
+            - Path=/second-service/**
+          filters:
 #              - AddRequestHeader=second-service-request, second-service-request-header2
 #              - AddResponseHeader=second-service-response, second-service-response-header2
-              - CustomFilter
-              - name: LoggingFilter
-                args:
-                  baseMessage: Spring Cloud Gateway Logging Filter
-                  preLogger: true
-                  postLogger: true
+            - CustomFilter
+            - name: LoggingFilter
+              args:
+                baseMessage: Spring Cloud Gateway Logging Filter
+                preLogger: true
+                postLogger: true
