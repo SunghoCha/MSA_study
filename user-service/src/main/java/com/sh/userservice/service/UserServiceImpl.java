@@ -4,16 +4,18 @@ import com.sh.userservice.dto.UserDto;
 import com.sh.userservice.jpa.UserEntity;
 import com.sh.userservice.jpa.UserRepository;
 import com.sh.userservice.vo.ResponseOrder;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -49,5 +51,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserEntity> getUserByAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(IllegalArgumentException::new);
+        return modelMapper.map(userEntity, UserDto.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 커스텀 예외 생략
+        UserEntity userEntity = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not fond with email: " + username));
+
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(),
+                true, true, true, true,
+                new ArrayList<>());
     }
 }

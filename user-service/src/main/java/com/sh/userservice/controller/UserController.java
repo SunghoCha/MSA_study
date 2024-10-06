@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user-service")
+@RequestMapping("/")
 public class UserController {
 
     private final Environment env;
@@ -30,6 +30,12 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final MapperConfig mapperConfig;
     private final UserServiceImpl userServiceImpl;
+
+    @GetMapping("/")
+    public String index() {
+        return String.format("It's home in User Service on PORT %s",
+                env.getProperty("local.server.port"));
+    }
 
     @GetMapping("/health-check")
     public String status() {

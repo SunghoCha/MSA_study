@@ -1,4 +1,4 @@
-package com.sh.userservice.config;
+package com.sh.apigatewayservice.config;
 
 import lombok.Getter;
 import lombok.Setter;

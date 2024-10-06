@@ -14,4 +14,5 @@ public class MapperConfig {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return mapper;
     }
+
 }
